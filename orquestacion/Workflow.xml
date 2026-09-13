@@ -1,0 +1,39 @@
+<workflow-app xmlns="uri:oozie:workflow:0.5" name="flujo_procesamiento">
+
+    <!-- 1.Inicio Proceso -->
+    <start to="nodo_pig"/>
+
+    <!-- 2.Proceso PIG-->
+    <action name="nodo_pig">
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <script>mi_script.pig</script>
+        </pig>
+        <ok to="fin_exitoso"/>
+        <error to="matar_proceso"/>
+    </action>
+
+    <!-- 2.Proceso Map Reduce-->
+    <action name="nodo_map_reduce">
+        <map-reduce>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.mapper.class</name>
+                    <value>WordCountMapReduce</value> 
+                </property>
+            </configuration>
+        <map-reduce>
+        <ok to="fin_exitoso"/>
+        <error to="matar_proceso"/>
+    </action>
+
+    <kill name="matar_proceso">
+        <message>No se concreto el proceso</message>
+    </kill>
+
+    <end name="fin_exitoso"/>
+    <!-- 4.Fin Proceso -->
+</workflow-app>

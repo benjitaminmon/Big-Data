@@ -1,0 +1,21 @@
+# Con este comando compilamos el archivo java
+javac -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* WordCountMapReduce.java -Xlint
+
+# Con este comando empaquetamos las clases creadas
+jar -cvf wordcountmapreduce.jar .
+
+# Creamos el directorio en el cluster
+hadoop fs -mkdir /user/cloudera/MapReduce/
+
+# Copiamos el archivo en el cluster (ejemplo base)
+hadoop fs -put ../data/order_reviews_dataset.csv /user/cloudera/MapReduce/
+
+# Para lanzar el archivo al cluster con los datos de Steam
+hadoop jar wordcountmapreduce.jar WordCountMapReduce /user/cloudera/proyecto/* /user/cloudera/out/wordcount
+
+# Si les da un error al lanzar el archivo por lo general es por que el archivo de salida existe, use estos comandos para borrar dir salida en HDFS
+hadoop fs -rm /user/cloudera/out/wordcount/*
+hadoop fs -rmdir /user/cloudera/out/wordcount
+
+# Para ver la salida con los resultados del conteo
+hadoop fs -cat /user/cloudera/out/wordcount/*
