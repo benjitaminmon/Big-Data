@@ -4,27 +4,29 @@ USE steam_analytics;
 
 -- 2. Crear la tabla externa apuntando a los datos en HDFS
 CREATE EXTERNAL TABLE IF NOT EXISTS juegos_steam (
-    appid INT,
-    name STRING,
-    release_date STRING,
+    appid INT, 
+    name STRING, 
+    release_date STRING, 
     is_free BOOLEAN,
-    price DOUBLE,
-    average_playtime_forever INT,
+    price DOUBLE, 
+    average_playtime_forever INT, 
     average_playtime_2weeks INT,
-    median_playtime_forever INT,
-    median_playtime_2weeks INT,
+    median_playtime_forever INT, 
+    median_playtime_2weeks INT, 
     peak_ccu INT,
-    num_reviews_total INT,
-    pct_pos_total INT,
+    num_reviews_total INT, 
+    pct_pos_total INT, 
     metacritic_score INT,
-    metacritic_url STRING,
     recommendations INT
 )
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
 WITH SERDEPROPERTIES (
    "separatorChar" = ",",
-   "quoteChar"     = "\"
+   "quoteChar"     = "\""
 )
-STORED AS TEXTFILE
-LOCATION '/user/cloudera/proyecto/'
+STORED AS TEXTFILE 
+LOCATION '/user/cloudera/proyecto/' 
 TBLPROPERTIES ("skip.header.line.count"="1");
+
+-- 3. Sincronizar metadatos con Impala
+INVALIDATE METADATA;

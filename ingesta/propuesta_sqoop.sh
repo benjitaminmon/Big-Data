@@ -14,7 +14,7 @@
 # IGNORE 1 LINES;
 
 sqoop import \
---connect jdbc:mysql://127.0.0.1/proyecto_I \ --LOCALHOST--
+--connect jdbc:mysql://127.0.0.1/proyecto_I \
 --username root \
 --password cloudera \
 --table steam_games \
